@@ -25,6 +25,11 @@ function createWindow() {
   // Open the DevTools.
   if (isDev) {
     win.webContents.openDevTools({ mode: 'detach' });
+    const installer = require('electron-devtools-installer');
+    installer
+      .default([installer.REACT_DEVELOPER_TOOLS, installer.REDUX_DEVTOOLS])
+      .then((name: any) => console.log(`Added Extension: ${name}`))
+      .catch((err: any) => console.log('Error adding extension: ', err));
   }
 
   const db = require('better-sqlite3')('./data/db.sqlite');
