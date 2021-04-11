@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "lib": [
+      "esnext"
+    ],
+    "noEmit": false,
+    "outDir": "build"
+  },
+  "include": [
+    "electron"
+  ]
+}
