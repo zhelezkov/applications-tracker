@@ -1,9 +1,10 @@
 import path from 'path';
-
 import { app, BrowserWindow } from 'electron';
 import isDev from 'electron-is-dev';
+import { initDb } from './db/init';
+import { loadRuntimeConfig } from './config/config';
 
-function createWindow() {
+async function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
     width: 800,
@@ -26,14 +27,17 @@ function createWindow() {
   if (isDev) {
     win.webContents.openDevTools({ mode: 'detach' });
     const installer = require('electron-devtools-installer');
-    installer
-      .default([installer.REACT_DEVELOPER_TOOLS, installer.REDUX_DEVTOOLS])
-      .then((name: any) => console.log(`Added Extension: ${name}`))
-      .catch((err: any) => console.log('Error adding extension: ', err));
+    await installer.default([
+      installer.REACT_DEVELOPER_TOOLS,
+      installer.REDUX_DEVTOOLS,
+    ]);
   }
 
-  const db = require('better-sqlite3')('./data/db.sqlite');
-  console.log(db);
+  const runtimeConfig = loadRuntimeConfig('./config/config.yaml');
+
+  console.log('runtimeConfig', runtimeConfig);
+
+  initDb(runtimeConfig);
 }
 
 // This method will be called when Electron has finished
