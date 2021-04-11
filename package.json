@@ -2,7 +2,7 @@
   "name": "applications-tracker",
   "version": "0.1.0",
   "private": true,
-  "main": "build/main.js",
+  "main": "build/electron/main.js",
   "scripts": {
     "start": "BROWSER=none react-scripts start",
     "start:electron": "yarn run build:electron && ELECTRON_START_URL=http://localhost:3000 electron .",

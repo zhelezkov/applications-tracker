@@ -1,7 +1,7 @@
 import db from 'better-sqlite3-helper';
+import type { Database } from 'better-sqlite3';
 
-import { RuntimeConfig } from '../config/config';
-import { Database } from 'better-sqlite3';
+import type { RuntimeConfig } from '../config/config';
 
 export function initDb(
   // initConfig: InitConfig,
@@ -9,8 +9,5 @@ export function initDb(
 ): Database {
   return db({
     path: runtimeConfig.db,
-    migrate: {
-      migrationsPath: './electron/migrations',
-    },
   }).connection();
 }

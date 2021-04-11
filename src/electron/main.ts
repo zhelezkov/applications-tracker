@@ -1,8 +1,9 @@
 import path from 'path';
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import isDev from 'electron-is-dev';
 import { initDb } from './db/init';
 import { loadRuntimeConfig } from './config/config';
+import { listUsers } from './db/users/service';
 
 async function createWindow() {
   // Create the browser window.
@@ -10,8 +11,8 @@ async function createWindow() {
     width: 800,
     height: 600,
     webPreferences: {
-      nodeIntegration: true,
-      nodeIntegrationInWorker: true,
+      preload: path.resolve(__dirname, './preload.js'),
+      contextIsolation: false,
     },
   });
 
@@ -38,6 +39,14 @@ async function createWindow() {
   console.log('runtimeConfig', runtimeConfig);
 
   initDb(runtimeConfig);
+
+  registerIpcChannels();
+}
+
+function registerIpcChannels() {
+  ipcMain.on('listUsers', async (event) => {
+    event.returnValue = listUsers();
+  });
 }
 
 // This method will be called when Electron has finished
