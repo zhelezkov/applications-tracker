@@ -3,7 +3,7 @@ import { app, BrowserWindow, ipcMain } from 'electron';
 import isDev from 'electron-is-dev';
 import { initDb } from './db/init';
 import { loadRuntimeConfig } from './config/config';
-import { listUsers } from './db/users/service';
+import { usersService } from './db/users/service';
 
 async function createWindow() {
   // Create the browser window.
@@ -40,12 +40,13 @@ async function createWindow() {
 
   initDb(runtimeConfig);
 
-  registerIpcChannels();
+  registerServicesInIpc();
 }
 
-function registerIpcChannels() {
-  ipcMain.on('listUsers', async (event) => {
-    event.returnValue = listUsers();
+function registerServicesInIpc() {
+  const ipcFunctions = [...usersService];
+  ipcFunctions.forEach((ipcFn) => {
+    ipcMain.handle(ipcFn.name, ipcFn.fn);
   });
 }
 

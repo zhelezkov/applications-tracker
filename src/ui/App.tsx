@@ -12,21 +12,7 @@ function App() {
     }, 2000);
   }, [dispatch]);
 
-  const [users, setUsers] = React.useState<User[]>([]);
-
-  const ipc = useIpc();
-
-  useEffect(() => {
-    const users = ipc.sendSync('listUsers');
-    console.log('users', users);
-    setUsers(users);
-  }, []);
-
-  return (
-    <div>
-      <Auth />
-    </div>
-  );
+  return <Auth />;
 }
 
 export default App;
