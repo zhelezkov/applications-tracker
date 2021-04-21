@@ -1,19 +1,16 @@
 import styled from 'styled-components';
 import {
-  Box,
   Button,
-  Container,
   FormControl,
   InputLabel,
   MenuItem,
   Select,
-  Typography,
 } from '@material-ui/core';
 
-import useIpc from '../../app/hooks';
 import React, { useCallback, useEffect } from 'react';
 
 import type { User } from '../../../types/user';
+import useIpc from '../../../types/ipc';
 
 const Wrapper = styled.div`
   display: flex;

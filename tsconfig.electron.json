@@ -2,9 +2,9 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "module": "commonjs",
-    "lib": ["esnext"],
+    "lib": ["esnext", "dom"],
     "noEmit": false,
     "outDir": "build"
   },
-  "include": ["src/electron", "src/types"],
+  "include": ["src/electron", "src/types"]
 }
