@@ -4,7 +4,8 @@ import isDev from 'electron-is-dev';
 import { initDb } from './db/init';
 import { loadRuntimeConfig } from './config/config';
 import { usersService } from './db/users/service';
-import { ordersService } from "./db/orders/service";
+import { ordersService } from './db/orders/service';
+import { configService } from './config/service';
 
 async function createWindow() {
   // Create the browser window.
@@ -45,7 +46,7 @@ async function createWindow() {
 }
 
 function registerServicesInIpc() {
-  const ipcFunctions = [...usersService, ...ordersService];
+  const ipcFunctions = [...configService, ...usersService, ...ordersService];
   ipcFunctions.forEach((ipcFn) => {
     ipcMain.handle(ipcFn.name, ipcFn.fn);
   });
