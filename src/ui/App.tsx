@@ -1,17 +1,19 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Auth from './features/auth/Auth';
-import { useAppDispatch } from './app/hooks';
-import { authenticate } from './features/auth/authSlice';
+import { HashRouter, Route } from 'react-router-dom';
+import Orders from './features/orders/Orders';
 
 function App() {
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    setTimeout(() => {
-      dispatch(authenticate());
-    }, 2000);
-  }, [dispatch]);
-
-  return <Auth />;
+  return (
+    <HashRouter>
+      <Route path="/auth">
+        <Auth />
+      </Route>
+      <Route path="/">
+        <Orders />
+      </Route>
+    </HashRouter>
+  );
 }
 
 export default App;
