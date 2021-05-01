@@ -1,9 +1,9 @@
-import ipc from "./ipc";
+import ipc from './ipc';
 
 export interface Order {
   id: number;
 }
 
 export async function listOrders(): Promise<Order[]> {
-  return ipc().invoke('listOrders')
+  return ipc().invoke('listOrders');
 }

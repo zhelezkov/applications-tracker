@@ -1,13 +1,6 @@
-import styled from 'styled-components';
-import {
-  Button,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-} from '@material-ui/core';
-
 import React, { useCallback, useEffect } from 'react';
+import styled from 'styled-components';
+import { Select, Button } from 'antd';
 
 import type { User } from '../../../types/user';
 import useIpc from '../../../types/ipc';
@@ -24,9 +17,9 @@ const Wrapper = styled.div`
 const UserSelect = styled(Select)`
   min-width: 300px;
   margin-bottom: 32px;
-`;
+` as typeof Select;
 
-export default () => {
+const Auth = () => {
   const [users, setUsers] = React.useState<User[]>([]);
   const [selectedUser, selectUser] = React.useState<User | null>(null);
 
@@ -43,8 +36,7 @@ export default () => {
   }, [ipc]);
 
   const handleUserSelect = useCallback(
-    (event: React.ChangeEvent<{ name?: string; value: unknown }>) => {
-      const id = event.target.value as number;
+    (id?: number) => {
       console.log(id);
       selectUser(users.find((user) => user.id === id) ?? null);
     },
@@ -53,23 +45,20 @@ export default () => {
 
   return (
     <Wrapper>
-      <FormControl>
-        <InputLabel id="user-choose">Выберите пользователя</InputLabel>
-        <UserSelect
-          value={selectedUser?.id ?? ''}
-          labelId="user-choose"
-          onChange={handleUserSelect}
-        >
-          {users.map((user) => (
-            <MenuItem key={user.id} value={user.id}>
-              {user.name}
-            </MenuItem>
-          ))}
-        </UserSelect>
-        <Button color="primary" variant="contained">
-          Войти
-        </Button>
-      </FormControl>
+      <UserSelect
+        value={selectedUser?.id}
+        placeholder="Выберите пользователя"
+        onChange={handleUserSelect}
+      >
+        {users.map((user) => (
+          <Select.Option key={user.id} value={user.id}>
+            {user.name}
+          </Select.Option>
+        ))}
+      </UserSelect>
+      <Button color="primary">Войти</Button>
     </Wrapper>
   );
 };
+
+export default Auth;
