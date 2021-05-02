@@ -1,18 +1,18 @@
-import React from 'react';
-import Auth from './features/auth/Auth';
+import { useGate, useStore } from 'effector-react';
+import React, { useEffect } from 'react';
 import { HashRouter, Route } from 'react-router-dom';
+import Auth from './features/auth/Auth';
 import Orders from './features/orders/Orders';
-import { useAppDispatch } from './app/hooks';
-import { useAsync } from 'react-use';
-import { loadSchema } from '../types/schema';
-import { setSchema } from './features/schema/schemaSlice';
+import { $schema, schemaGate } from './features/schema/model';
 
 function App() {
-  const dispatch = useAppDispatch();
-  useAsync(async () => {
-    const schema = await loadSchema();
-    dispatch(setSchema(schema));
-  }, []);
+  useGate(schemaGate);
+
+  const schema = useStore($schema);
+
+  useEffect(() => {
+    console.log(schema);
+  }, [schema]);
 
   return (
     <HashRouter>
