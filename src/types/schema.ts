@@ -1,12 +1,22 @@
 import ipc from './ipc';
 
-export interface Attribute {
+export enum AttributeType {
+  input = 'input',
+  select = 'select',
+  multiSelect = 'multiSelect',
+}
+
+export interface AttributeDefinition {
   id: string;
-  values: string[];
+  name?: string;
+  values?: string[];
+  type?: AttributeType;
+  otherValue?: boolean;
+  multiSelect?: boolean;
 }
 
 export interface Schema {
-  attributes: Record<string, Omit<Attribute, 'id'>>;
+  attributes: Record<string, Omit<AttributeDefinition, 'id'>>;
 }
 
 export async function loadSchema(): Promise<Schema> {

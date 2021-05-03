@@ -1,7 +1,9 @@
+import { Modal } from 'antd';
 import React from 'react';
 import { useMeasure } from 'react-use';
 import styled from 'styled-components';
 import Controls from '../../features/orders/Controls';
+import EditOrderForm from '../../features/orders/EditOrderForm';
 import OrdersTable from '../../features/orders/OrdersTable';
 
 const Wrapper = styled.div`
@@ -26,6 +28,9 @@ const OrdersPage = () => {
       <TableWrapper>
         <OrdersTable height={wrapperHeight} />
       </TableWrapper>
+      <Modal visible={true}>
+        <EditOrderForm />
+      </Modal>
     </Wrapper>
   );
 };

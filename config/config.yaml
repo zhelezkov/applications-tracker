@@ -3,9 +3,11 @@ db: ./data/db.sqlite
 schema:
   attributes:
     title:
-      type: string
+      name: название
+      type: input
     status:
-      otherValue: true
+      name: статус
+      type: input
       values:
         - устный заказ
         - указание директора
@@ -14,25 +16,29 @@ schema:
         - выполнено
         - отправить в архив
     category:
+      name: категория
+      type: select
       values:
         - cat1
         - cat2
         - cat3
     customer:
+      name: заказчик
+      type: select
       values:
         - cust1
         - cust2
         - cust3
     type:
-      multiSelect: true
+      type: multiSelect
       values:
         - type1
         - type2
         - type3
     internalCode:
-      type: string
+      type: input
     managerZone:
-      multiSelect: true
+      type: multiSelect
       values:
         - zone1
         - zone2

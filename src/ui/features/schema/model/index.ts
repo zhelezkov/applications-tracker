@@ -5,11 +5,9 @@ import { $attributes, $attributesById } from './attributes';
 
 export const schemaGate = createGate();
 
-export const $schema = combine($attributes, $attributesById);
+export const $schema = combine({ $attributes, $attributesById });
 
-export const fetchSchemaFx = createEffect(async () => {
-  return loadSchema();
-});
+export const fetchSchemaFx = createEffect(async () => loadSchema());
 
 forward({
   from: schemaGate.open,
