@@ -1,33 +1,19 @@
 import { Layout } from 'antd';
-import { useGate, useStore } from 'effector-react';
+import { useGate } from 'effector-react';
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
-import { $schema, schemaGate } from './features/schema/model';
-import Header from './Header';
-
-const { Content } = Layout;
+import AppContent from './AppContent';
+import AppHeader from './AppHeader';
+import { schemaGate } from './features/schema/model';
 
 function App() {
   useGate(schemaGate);
 
-  const schema = useStore($schema);
+  // const schema = useStore($schema);
 
   return (
     <Layout>
-      <Header />
-      <Content>
-        <Switch>
-          <Route exact path="/orders">
-            <div>/orders</div>
-          </Route>
-          <Route exact path="/history">
-            <div>/history</div>
-          </Route>
-          <Route exact path="/settings">
-            <div>Настройки</div>
-          </Route>
-        </Switch>
-      </Content>
+      <AppHeader />
+      <AppContent />
     </Layout>
   );
 }

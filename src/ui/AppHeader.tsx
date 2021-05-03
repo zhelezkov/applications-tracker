@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
-const { Header: HeaderWrapper } = Layout;
+const { Header } = Layout;
 
 const Logo = styled.div`
   float: left;
@@ -13,7 +13,7 @@ const Logo = styled.div`
   background: rgba(255, 255, 255, 0.3);
 `;
 
-const Header = () => {
+const AppHeader = () => {
   const { push: pushHistory } = useHistory();
   const { pathname } = useLocation();
 
@@ -26,8 +26,7 @@ const Header = () => {
   );
 
   return (
-    <HeaderWrapper>
-      <Logo />
+    <Header>
       <Menu
         selectedKeys={[pathname]}
         onClick={handleMenuClick}
@@ -38,8 +37,8 @@ const Header = () => {
         <Menu.Item key="/history">Хроника</Menu.Item>
         <Menu.Item key="/settings">Настройки</Menu.Item>
       </Menu>
-    </HeaderWrapper>
+    </Header>
   );
 };
 
-export default Header;
+export default AppHeader;
