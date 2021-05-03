@@ -1,6 +1,7 @@
 import { Table } from 'antd';
 import { listOrders } from '../../../types/order';
 import { useAsync } from 'react-use';
+import Controls from './Controls';
 
 const columns = [
   {
@@ -21,9 +22,12 @@ const columns = [
 const Orders = () => {
   const ordersState = useAsync(listOrders, []);
 
-  console.log(ordersState);
-
-  return <Table columns={columns} dataSource={ordersState.value} />;
+  return (
+    <>
+      <Controls />
+      <Table columns={columns} dataSource={ordersState.value} />
+    </>
+  );
 };
 
 export default Orders;
