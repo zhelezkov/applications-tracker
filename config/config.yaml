@@ -2,7 +2,10 @@
 db: ./data/db.sqlite
 schema:
   attributes:
+    title:
+      type: string
     status:
+      otherValue: true
       values:
         - устный заказ
         - указание директора
@@ -10,3 +13,27 @@ schema:
         - заявка
         - выполнено
         - отправить в архив
+    category:
+      values:
+        - cat1
+        - cat2
+        - cat3
+    customer:
+      values:
+        - cust1
+        - cust2
+        - cust3
+    type:
+      multiSelect: true
+      values:
+        - type1
+        - type2
+        - type3
+    internalCode:
+      type: string
+    managerZone:
+      multiSelect: true
+      values:
+        - zone1
+        - zone2
+        - zone3

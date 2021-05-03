@@ -1,9 +1,9 @@
 import db from 'better-sqlite3-helper';
-import type { User } from '../../../types/user';
+import type { Order } from '../../../types/order';
 import { makeService } from '../utils';
 
 export const ordersService = makeService({
-  listOrders: () => {
-    return db().query<User>('select * from orders');
+  loadOrdersList: () => {
+    return db().query<Order>('select * from orders');
   },
 });

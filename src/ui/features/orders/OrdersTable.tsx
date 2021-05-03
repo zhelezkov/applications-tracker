@@ -1,8 +1,8 @@
 import { Table, TablePaginationConfig } from 'antd';
+import { useStore } from 'effector-react';
 import { nanoid } from 'nanoid';
 import { useMemo } from 'react';
-import { useMeasure } from 'react-use';
-import styled from 'styled-components';
+import { $orders } from './model';
 
 const columns = [
   {
@@ -36,10 +36,7 @@ interface OrdersTableProps {
 }
 
 const OrdersTable = ({ height }: OrdersTableProps) => {
-  // const ordersState = useAsync(listOrders, []);
-
-  const dataSource = genOrders(25);
-  console.log(dataSource);
+  const orders = useStore($orders);
 
   const paginationConfig: TablePaginationConfig = useMemo(
     () => ({
@@ -54,7 +51,7 @@ const OrdersTable = ({ height }: OrdersTableProps) => {
     <Table
       pagination={paginationConfig}
       columns={columns}
-      dataSource={dataSource}
+      dataSource={orders}
     />
   );
 };

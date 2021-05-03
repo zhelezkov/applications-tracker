@@ -4,6 +4,6 @@ export interface Order {
   id: number;
 }
 
-export async function listOrders(): Promise<Order[]> {
-  return ipc().invoke('listOrders');
+export async function loadOrdersList(): Promise<Order[]> {
+  return ipc().invoke('loadOrdersList');
 }
