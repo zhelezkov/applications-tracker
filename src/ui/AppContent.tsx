@@ -10,7 +10,7 @@ const Wrapper = styled(Content)`
   padding-top: 16px;
   display: flex;
   height: calc(100vh - 64px);
-  //overflow: hidden;
+  overflow: hidden;
 `;
 
 const AppContent = () => {

@@ -1,7 +1,15 @@
 import { Button } from 'antd';
 
-const Controls = () => {
-  return <Button type="primary">Новый заказ</Button>;
+interface ControlsProps {
+  onNewOrder: () => void;
+}
+
+const Controls = ({ onNewOrder }: ControlsProps) => {
+  return (
+    <Button type="primary" onClick={onNewOrder}>
+      Новый заказ
+    </Button>
+  );
 };
 
 export default Controls;

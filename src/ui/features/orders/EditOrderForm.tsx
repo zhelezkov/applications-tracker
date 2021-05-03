@@ -1,7 +1,7 @@
-import { AutoComplete, Form, Select } from 'antd';
+import { AutoComplete, Form, FormInstance, Select } from 'antd';
 import { useStore } from 'effector-react';
 import { capitalize } from 'lodash';
-import type { Order } from '../../../models/order';
+import type { OrderAttributes } from '../../../models/order';
 import type { AttributeDefinition } from '../../../models/schema';
 import { $schema, AttributeType } from '../../../models/schema';
 
@@ -35,14 +35,14 @@ const AttributeField = ({ definition }: AttributeFieldProps) => {
 };
 
 interface EditOrderFormProps {
-  defaultValue?: Order;
+  form: FormInstance<OrderAttributes>;
 }
 
-const EditOrderForm = ({}: EditOrderFormProps) => {
+const EditOrderForm = ({ form }: EditOrderFormProps) => {
   const schema = useStore($schema);
 
   return (
-    <Form layout="vertical">
+    <Form form={form} layout="vertical">
       {schema.$attributes.map((attr) => (
         <AttributeField key={attr.id} definition={attr} />
       ))}

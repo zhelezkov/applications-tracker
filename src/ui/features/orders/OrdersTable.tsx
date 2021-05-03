@@ -1,31 +1,25 @@
 import { Table, TablePaginationConfig } from 'antd';
+import type { ColumnsType } from 'antd/es/table';
 import { useStore } from 'effector-react';
-import { nanoid } from 'nanoid';
-import { useMemo } from 'react';
-import { $orders } from '../../../models/order';
+import { useCallback, useMemo } from 'react';
+import { $orders, Order } from '../../../models/order';
 
-const columns = [
+import styles from './OrdersTable.module.css';
+
+const columns: ColumnsType<Order> = [
   {
     title: 'id',
-    key: 'id',
+    dataIndex: 'id',
   },
   {
     title: 'Название',
-    dataIndex: 'title',
+    dataIndex: ['attributes', 'title'],
   },
   {
     title: 'Статус',
-    key: 'status',
-    dataIndex: 'status',
+    dataIndex: ['attributes', 'status'],
   },
 ];
-
-function genOrders(
-  size: number
-): { id: string; title: string; status: string }[] {
-  const arr = new Array(size).fill(null);
-  return arr.map(() => ({ id: nanoid(), title: nanoid(), status: nanoid() }));
-}
 
 const HEADER_HEIGHT = 55;
 const ROW_HEIGHT = 55;
@@ -33,9 +27,10 @@ const FOOTER_HEIGHT = 64;
 
 interface OrdersTableProps {
   height: number;
+  onRowClick?: (order: Order) => void;
 }
 
-const OrdersTable = ({ height }: OrdersTableProps) => {
+const OrdersTable = ({ height, onRowClick }: OrdersTableProps) => {
   const orders = useStore($orders);
 
   const paginationConfig: TablePaginationConfig = useMemo(
@@ -47,11 +42,24 @@ const OrdersTable = ({ height }: OrdersTableProps) => {
     [height]
   );
 
+  const handleRowEnchantment = useCallback(
+    (order: Order) => {
+      return {
+        onClick: () => {
+          onRowClick?.(order);
+        },
+      };
+    },
+    [onRowClick]
+  );
+
   return (
-    <Table
+    <Table<Order>
       pagination={paginationConfig}
       columns={columns}
       dataSource={orders}
+      onRow={handleRowEnchantment}
+      rowClassName={styles.row}
     />
   );
 };
