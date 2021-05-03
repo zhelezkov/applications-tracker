@@ -2,7 +2,7 @@ import { Table, TablePaginationConfig } from 'antd';
 import { useStore } from 'effector-react';
 import { nanoid } from 'nanoid';
 import { useMemo } from 'react';
-import { $orders } from './model';
+import { $orders } from '../../../models/order';
 
 const columns = [
   {

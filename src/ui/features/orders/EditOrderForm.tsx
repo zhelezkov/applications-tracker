@@ -1,10 +1,9 @@
 import { AutoComplete, Form, Select } from 'antd';
 import { useStore } from 'effector-react';
 import { capitalize } from 'lodash';
-import type { Order } from '../../../types/order';
-import type { AttributeDefinition } from '../../../types/schema';
-import { AttributeType } from '../../../types/schema';
-import { $schema } from '../schema/model';
+import type { Order } from '../../../models/order';
+import type { AttributeDefinition } from '../../../models/schema';
+import { $schema, AttributeType } from '../../../models/schema';
 
 interface AttributeFieldProps {
   definition: AttributeDefinition;
@@ -24,6 +23,7 @@ const renderInputByType = ({ type, values = [] }: AttributeDefinition) => {
   }
   return null;
 };
+
 const AttributeField = ({ definition }: AttributeFieldProps) => {
   const { id, name } = definition;
   const label = capitalize(name ?? id);
