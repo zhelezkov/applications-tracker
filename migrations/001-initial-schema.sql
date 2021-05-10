@@ -23,6 +23,8 @@ create table orders_av
     last_updated_at integer not null,
     last_updated_by integer not null,
     value           text,
+    is_array        boolean not null default false,
+    array_index     integer,
     foreign key (order_id) references orders (id),
     foreign key (last_updated_by) references users (id)
 );

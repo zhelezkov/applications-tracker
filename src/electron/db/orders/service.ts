@@ -1,6 +1,6 @@
 import db from 'better-sqlite3-helper';
 import { pickBy } from 'lodash';
-import { ipcNewOrder } from '../../../types/order';
+import { ipcNewOrder, ipcUpdateOrder } from '../../../types/order';
 import type { Order, OrderAttributes } from '../../../types/order';
 import { makeService } from '../utils';
 
@@ -14,14 +14,20 @@ function insertAttributes(
   orderId: number,
   attributes: OrderAttributes
 ) {
-  console.log({ updatedBy, orderId, attributes });
-
   const prepared = db().prepare(
-    'insert into orders_av(order_id, attribute_id, value, last_updated_by, last_updated_at) VALUES (?, ?, ?, ?, ?)'
+    'insert into orders_av(order_id, attribute_id, value, is_array, array_index, last_updated_by, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
   );
 
-  runWithAttributes(attributes, (attributeId, value) =>
-    prepared.run(orderId, attributeId, value, updatedBy, Date.now())
+  runWithAttributes(attributes, (attributeId, value, isArray, index) =>
+    prepared.run(
+      orderId,
+      attributeId,
+      value,
+      isArray,
+      index,
+      updatedBy,
+      Date.now()
+    )
   );
 }
 
@@ -30,69 +36,76 @@ function updateAttributes(
   orderId: number,
   attributes: OrderAttributes
 ) {
-  const prepared = db().prepare(
-    'update orders_av set value = ?, last_updated_by = ?, last_updated_at = ? where attribute_id = ? and order_id = ?'
-  );
-
-  runWithAttributes(attributes, (attributeId, value) =>
-    prepared.run(value, updatedBy, Date.now(), attributeId, orderId)
-  );
+  // first clear fields
+  db().run('delete from orders_av where order_id = ?', orderId);
+  insertAttributes(updatedBy, orderId, attributes);
 }
 
 function runWithAttributes(
   attributes: OrderAttributes,
-  preparedStmtRunner: (attributeId: string, value: string) => void
+  preparedStmtRunner: (
+    attributeId: string,
+    value: string,
+    isArray: number,
+    index: number | null
+  ) => void
 ) {
   Object.entries(attributes).forEach(([id, value]) => {
     if (Array.isArray(value)) {
-      value.forEach((val) => {
-        preparedStmtRunner(id, val);
+      value.forEach((val, idx) => {
+        preparedStmtRunner(id, val, 1, idx);
       });
       return;
     }
-    preparedStmtRunner(id, value);
+    preparedStmtRunner(id, value, 0, null);
   });
 }
 
 export const ordersService = makeService({
   listOrders: () => {
     const ordersRows = db().query(
-      'select id, attribute_id, value from orders join orders_av oa on orders.id = oa.order_id'
+      'select id, attribute_id, value, is_array, array_index from orders join orders_av oa on orders.id = oa.order_id'
     );
     return ordersRows.reduce((acc, row) => {
-      const { id, value, attribute_id: attributeId } = row;
+      const {
+        id,
+        value,
+        attribute_id: attributeId,
+        is_array: isArray,
+        array_index: arrayIndex,
+      } = row;
       if (!acc[id]) {
         acc[id] = {
           id,
-          attributes: { [attributeId]: value },
+          attributes: {},
         };
+      }
+      if (Array.isArray(acc[id].attributes[attributeId])) {
+        const arr = acc[id].attributes[attributeId] as string[];
+        arr.splice(arrayIndex, 0, value);
         return acc;
       }
-      if (typeof acc[id].attributes[attributeId] !== 'undefined') {
-        const attributes = acc[id].attributes;
-        const attrVal = attributes[attributeId];
-        if (Array.isArray(attrVal)) {
-          attributes[attributeId] = [...attrVal, value];
-          return acc;
-        }
-        acc[id].attributes[attributeId] = [attrVal, value];
-        return acc;
-      }
-      acc[id].attributes[attributeId] = value;
+      acc[id].attributes[attributeId] = isArray ? [value] : value;
       return acc;
     }, {} as Record<string, Order>);
   },
   [ipcNewOrder]: (userId: number, attributes: OrderAttributes) => {
-    const orderId = newOrder();
     const validAttributes = pickBy(attributes, (value) => value !== undefined);
-    insertAttributes(userId, orderId, validAttributes);
-    return orderId;
+    const run = db().transaction(() => {
+      const orderId = newOrder();
+      insertAttributes(userId, orderId, validAttributes);
+      return orderId;
+    });
+    return run();
   },
-  updateOrder: (userId: number, order: Order) => {
+  [ipcUpdateOrder]: (userId: number, order: Order) => {
     const validAttributes = pickBy(
       order?.attributes || {},
       (value) => value !== undefined
     );
-    updateAttributes(userId, order.id, validAttributes);
+    const run = db().transaction(() => {
+      updateAttributes(userId, order.id, validAttributes);
+    });
+    run();
   },
 });
