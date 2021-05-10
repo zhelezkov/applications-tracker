@@ -1,22 +1,22 @@
 import { AutoComplete, Form, FormInstance, Select } from 'antd';
 import { useStore } from 'effector-react';
 import { capitalize } from 'lodash';
-import type { OrderAttributes } from '../../../models/order';
-import type { AttributeDefinition } from '../../../models/schema';
-import { $schema, AttributeType } from '../../../models/schema';
+import type { OrderAttributes } from '../../../types/order';
+import { AttributeDefinition, AttributeType } from '../../../types/schema';
+import { $schema } from '../schema/model';
 
 interface AttributeFieldProps {
   definition: AttributeDefinition;
 }
 
 const renderInputByType = ({ type, values = [] }: AttributeDefinition) => {
-  if (type === AttributeType.input) {
+  if (type === AttributeType.Input) {
     return <AutoComplete options={values.map((value) => ({ value }))} />;
   }
-  if (type === AttributeType.select) {
+  if (type === AttributeType.Select) {
     return <Select options={values.map((value) => ({ value }))} />;
   }
-  if (type === AttributeType.multiSelect) {
+  if (type === AttributeType.MultiSelect) {
     return (
       <Select mode="multiple" options={values.map((value) => ({ value }))} />
     );

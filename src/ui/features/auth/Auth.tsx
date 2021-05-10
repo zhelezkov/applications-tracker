@@ -1,9 +1,9 @@
 import { Button, Select } from 'antd';
 import React, { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
-import useIpc from '../../../ipc';
+import useIpc from '../../ipc';
 
-import type { User } from '../../../models/user';
+import type { User } from '../../../types/user';
 
 const Wrapper = styled.div`
   display: flex;

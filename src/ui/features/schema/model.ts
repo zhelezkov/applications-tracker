@@ -1,26 +1,8 @@
 import { combine, createEffect, createStore, forward } from 'effector';
 import { createGate } from 'effector-react';
 import { keyBy } from 'lodash';
-import ipc from '../ipc';
-
-export enum AttributeType {
-  input = 'input',
-  select = 'select',
-  multiSelect = 'multiSelect',
-}
-
-export interface AttributeDefinition {
-  id: string;
-  name?: string;
-  values?: string[];
-  type?: AttributeType;
-  otherValue?: boolean;
-  multiSelect?: boolean;
-}
-
-export interface SchemaConfig {
-  attributes: Record<string, Omit<AttributeDefinition, 'id'>>;
-}
+import ipc from '../../ipc';
+import type { AttributeDefinition, SchemaConfig } from '../../../types/schema';
 
 export const $attributes = createStore<AttributeDefinition[]>([]);
 

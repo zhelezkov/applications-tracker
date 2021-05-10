@@ -11,8 +11,8 @@ create table users
 create table orders
 (
     id              integer not null primary key autoincrement,
-    last_updated_at integer not null,
-    last_updated_by integer not null,
+    last_updated_at integer,
+    last_updated_by integer,
     foreign key (last_updated_by) references users (id)
 );
 

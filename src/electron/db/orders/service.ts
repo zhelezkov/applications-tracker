@@ -1,6 +1,6 @@
 import db from 'better-sqlite3-helper';
 import { pickBy } from 'lodash';
-import type { Order, OrderAttributes } from '../../../models/order';
+import type { Order, OrderAttributes } from '../../../types/order';
 import { makeService } from '../utils';
 
 function newOrder(): number {

@@ -1,6 +1,6 @@
 import fs from 'fs';
 import yaml from 'js-yaml';
-import type { SchemaConfig } from '../../models/schema';
+import type { SchemaConfig } from '../../types/schema';
 
 export interface RuntimeConfig {
   db: string;

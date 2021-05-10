@@ -2,7 +2,8 @@ import { Table, TablePaginationConfig } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useStore } from 'effector-react';
 import { useCallback, useMemo } from 'react';
-import { $orders, Order } from '../../../models/order';
+import type { Order } from '../../../types/order';
+import { $orders } from './model';
 
 import styles from './OrdersTable.module.css';
 

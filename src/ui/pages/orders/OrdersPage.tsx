@@ -1,20 +1,17 @@
 import { Form, Modal } from 'antd';
 import { useGate } from 'effector-react';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useMeasure } from 'react-use';
 import styled from 'styled-components';
-import {
-  newOrderFx,
-  Order,
-  OrderAttributes,
-  ordersGate,
-  updateOrderFx,
-} from '../../../models/order';
+import type { Order, OrderAttributes } from '../../../types/order';
 import Controls from '../../features/orders/Controls';
 import EditOrderForm from '../../features/orders/EditOrderForm';
+import {
+  newOrderFx,
+  ordersGate,
+  updateOrderFx,
+} from '../../features/orders/model';
 import OrdersTable from '../../features/orders/OrdersTable';
-
-const ORDER_ID_INTERNAL_FIELD_NAME = '__internal_orderId';
 
 const Wrapper = styled.div`
   flex: 1;
@@ -24,8 +21,6 @@ const Wrapper = styled.div`
 const ControlsWrapper = styled.div`
   margin-bottom: 16px;
 `;
-
-const TableWrapper = styled.div``;
 
 const OrdersPage = () => {
   useGate(ordersGate);
@@ -84,9 +79,9 @@ const OrdersPage = () => {
       <ControlsWrapper>
         <Controls onNewOrder={handleNewOrderClick} />
       </ControlsWrapper>
-      <TableWrapper>
+      <div>
         <OrdersTable height={wrapperHeight} onRowClick={handleOrderRowClick} />
-      </TableWrapper>
+      </div>
       <Modal
         visible={isOrderFormVisible}
         onOk={handleOrderSave}

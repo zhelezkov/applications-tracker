@@ -1,15 +1,7 @@
 import { createEffect, createStore, forward } from 'effector';
 import { createGate } from 'effector-react';
-import ipc from '../ipc';
-
-// types
-
-export type OrderAttributes = Record<string, any>;
-
-export interface Order {
-  id: number;
-  attributes?: OrderAttributes;
-}
+import type { Order, OrderAttributes } from '../../../types/order';
+import ipc from '../../ipc';
 
 // stores
 
