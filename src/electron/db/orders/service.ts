@@ -8,23 +8,46 @@ function newOrder(): number {
     .lastInsertRowid as number;
 }
 
-function insertAttributes(orderId: number, attributes: OrderAttributes) {
+function insertAttributes(
+  updatedBy: number,
+  orderId: number,
+  attributes: OrderAttributes
+) {
   const prepared = db().prepare(
-    'insert into orders_av(order_id, attribute_id, value) VALUES (?, ?, ?)'
+    'insert into orders_av(order_id, attribute_id, value, last_updated_by, last_updated_at) VALUES (?, ?, ?, ?, ?)'
   );
 
-  Object.entries(attributes).forEach(([id, value]) => {
-    prepared.run(orderId, id, JSON.stringify(value));
-  });
+  runWithAttributes(attributes, (attributeId, value) =>
+    prepared.run(orderId, attributeId, value, updatedBy, Date.now())
+  );
 }
 
-function updateAttributes(orderId: number, attributes: OrderAttributes) {
+function updateAttributes(
+  updatedBy: number,
+  orderId: number,
+  attributes: OrderAttributes
+) {
   const prepared = db().prepare(
-    'update orders_av set value = ? where order_id = ? and attribute_id = ?'
+    'update orders_av set value = ?, last_updated_by = ?, last_updated_at = ? where attribute_id = ? and order_id = ?'
   );
 
+  runWithAttributes(attributes, (attributeId, value) =>
+    prepared.run(value, updatedBy, Date.now(), attributeId, orderId)
+  );
+}
+
+function runWithAttributes(
+  attributes: OrderAttributes,
+  preparedStmtRunner: (attributeId: string, value: string) => void
+) {
   Object.entries(attributes).forEach(([id, value]) => {
-    prepared.run(JSON.stringify(value), orderId, id);
+    if (Array.isArray(value)) {
+      value.forEach((val) => {
+        preparedStmtRunner(id, val);
+      });
+      return;
+    }
+    preparedStmtRunner(id, value);
   });
 }
 
@@ -34,29 +57,39 @@ export const ordersService = makeService({
       'select id, attribute_id, value from orders join orders_av oa on orders.id = oa.order_id'
     );
     return ordersRows.reduce((acc, row) => {
-      const value = JSON.parse(row.value);
-      if (!acc[row.id]) {
-        acc[row.id] = {
-          id: row.id,
-          attributes: { [row.attribute_id]: value },
+      const { id, value, attribute_id: attributeId } = row;
+      if (!acc[id]) {
+        acc[id] = {
+          id,
+          attributes: { [attributeId]: value },
         };
         return acc;
       }
-      acc[row.id].attributes[row.attribute_id] = value;
+      if (typeof acc[id].attributes[attributeId] !== 'undefined') {
+        const attributes = acc[id].attributes;
+        const attrVal = attributes[attributeId];
+        if (Array.isArray(attrVal)) {
+          attributes[attributeId] = [...attrVal, value];
+          return acc;
+        }
+        acc[id].attributes[attributeId] = [attrVal, value];
+        return acc;
+      }
+      acc[id].attributes[attributeId] = value;
       return acc;
     }, {} as Record<string, Order>);
   },
-  newOrder: (attributes: OrderAttributes) => {
+  newOrder: (userId: number, attributes: OrderAttributes) => {
     const orderId = newOrder();
     const validAttributes = pickBy(attributes, (value) => value !== undefined);
-    insertAttributes(orderId, validAttributes);
+    insertAttributes(userId, orderId, validAttributes);
     return orderId;
   },
-  updateOrder: (order: Order) => {
+  updateOrder: (userId: number, order: Order) => {
     const validAttributes = pickBy(
       order?.attributes || {},
       (value) => value !== undefined
     );
-    updateAttributes(order.id, validAttributes);
+    updateAttributes(userId, order.id, validAttributes);
   },
 });

@@ -60,6 +60,7 @@ const OrdersTable = ({ height, onRowClick }: OrdersTableProps) => {
       dataSource={orders}
       onRow={handleRowEnchantment}
       rowClassName={styles.row}
+      rowKey={(order) => order.id}
     />
   );
 };

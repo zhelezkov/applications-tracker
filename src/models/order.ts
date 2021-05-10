@@ -4,11 +4,6 @@ import ipc from '../ipc';
 
 // types
 
-export interface OrderAttribute {
-  id: string;
-  value: any;
-}
-
 export type OrderAttributes = Record<string, any>;
 
 export interface Order {
