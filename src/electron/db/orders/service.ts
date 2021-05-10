@@ -14,7 +14,7 @@ function insertAttributes(orderId: number, attributes: OrderAttributes) {
   );
 
   Object.entries(attributes).forEach(([id, value]) => {
-    prepared.run(orderId, id, value);
+    prepared.run(orderId, id, JSON.stringify(value));
   });
 }
 
@@ -24,7 +24,7 @@ function updateAttributes(orderId: number, attributes: OrderAttributes) {
   );
 
   Object.entries(attributes).forEach(([id, value]) => {
-    prepared.run(value, orderId, id);
+    prepared.run(JSON.stringify(value), orderId, id);
   });
 }
 
@@ -34,14 +34,15 @@ export const ordersService = makeService({
       'select id, attribute_id, value from orders join orders_av oa on orders.id = oa.order_id'
     );
     return ordersRows.reduce((acc, row) => {
+      const value = JSON.parse(row.value);
       if (!acc[row.id]) {
         acc[row.id] = {
           id: row.id,
-          attributes: { [row.attribute_id]: row.value },
+          attributes: { [row.attribute_id]: value },
         };
         return acc;
       }
-      acc[row.id].attributes[row.attribute_id] = row.value;
+      acc[row.id].attributes[row.attribute_id] = value;
       return acc;
     }, {} as Record<string, Order>);
   },
