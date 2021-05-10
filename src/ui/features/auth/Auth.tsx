@@ -1,9 +1,11 @@
 import { Button, Select } from 'antd';
+import { useStore } from 'effector-react';
 import React, { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import useIpc from '../../ipc';
 
 import type { User } from '../../../types/user';
+import { $currentUser, $users, userSelected } from './model';
 
 const Wrapper = styled.div`
   display: flex;
@@ -20,33 +22,21 @@ const UserSelect = styled(Select)`
 ` as typeof Select;
 
 const Auth = () => {
-  const [users, setUsers] = React.useState<User[]>([]);
-  const [selectedUser, selectUser] = React.useState<User | null>(null);
+  const users = useStore($users);
+  const currentUser = useStore($currentUser);
 
-  const ipc = useIpc();
+  console.log(users);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const users = await ipc.invoke('listUsers');
-      console.log('users', users);
-      setUsers(users);
-    };
-
-    fetchUsers();
-  }, [ipc]);
-
-  const handleUserSelect = useCallback(
-    (id?: number) => {
-      console.log(id);
-      selectUser(users.find((user) => user.id === id) ?? null);
-    },
-    [users]
-  );
+  const handleUserSelect = useCallback((id?: number) => {
+    console.log(id);
+    if (!id) return;
+    userSelected(id);
+  }, []);
 
   return (
     <Wrapper>
       <UserSelect
-        value={selectedUser?.id}
+        value={currentUser?.id}
         placeholder="Выберите пользователя"
         onChange={handleUserSelect}
       >

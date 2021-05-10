@@ -1,7 +1,10 @@
 import { createEffect, createStore, forward } from 'effector';
 import { createGate } from 'effector-react';
+import { attach } from 'effector/effector.cjs';
+import { ipcNewOrder } from '../../../types/order';
 import type { Order, OrderAttributes } from '../../../types/order';
 import ipc from '../../ipc';
+import { $currentUserId } from '../auth/model';
 
 // stores
 
@@ -17,9 +20,16 @@ export const fetchOrdersFx = createEffect<void, Record<string, Order>>(
   async () => ipc().invoke('listOrders')
 );
 
-export const newOrderFx = createEffect<OrderAttributes, number>(
-  async (attributes) => ipc().invoke('newOrder', attributes)
-);
+export const newOrderFx = attach({
+  effect: createEffect<{ userId: number; attributes: OrderAttributes }, number>(
+    async ({ userId, attributes }) =>
+      ipc().invoke(ipcNewOrder, userId, attributes)
+  ),
+  source: $currentUserId,
+  mapParams: (attributes: OrderAttributes, userId) => {
+    return { userId: userId!, attributes };
+  },
+});
 
 export const updateOrderFx = createEffect<Order, void>(async (order) =>
   ipc().invoke('updateOrder', order)

@@ -4,4 +4,4 @@ export interface User {
   role: 'supervisor' | 'manager' | 'director';
 }
 
-export const userIpc = 'listUsers';
+export const ipcListUsers = 'listUsers';

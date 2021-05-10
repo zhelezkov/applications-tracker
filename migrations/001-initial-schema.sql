@@ -46,7 +46,7 @@ begin
     update orders
     set last_updated_by = new.last_updated_by,
         last_updated_at = new.last_updated_at
-    where order_id = new.order_id;
+    where id = new.order_id;
 end;
 
 

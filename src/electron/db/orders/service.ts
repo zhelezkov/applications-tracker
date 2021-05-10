@@ -1,5 +1,6 @@
 import db from 'better-sqlite3-helper';
 import { pickBy } from 'lodash';
+import { ipcNewOrder } from '../../../types/order';
 import type { Order, OrderAttributes } from '../../../types/order';
 import { makeService } from '../utils';
 
@@ -13,6 +14,8 @@ function insertAttributes(
   orderId: number,
   attributes: OrderAttributes
 ) {
+  console.log({ updatedBy, orderId, attributes });
+
   const prepared = db().prepare(
     'insert into orders_av(order_id, attribute_id, value, last_updated_by, last_updated_at) VALUES (?, ?, ?, ?, ?)'
   );
@@ -79,7 +82,7 @@ export const ordersService = makeService({
       return acc;
     }, {} as Record<string, Order>);
   },
-  newOrder: (userId: number, attributes: OrderAttributes) => {
+  [ipcNewOrder]: (userId: number, attributes: OrderAttributes) => {
     const orderId = newOrder();
     const validAttributes = pickBy(attributes, (value) => value !== undefined);
     insertAttributes(userId, orderId, validAttributes);
