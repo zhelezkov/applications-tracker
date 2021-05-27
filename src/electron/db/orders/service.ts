@@ -1,12 +1,45 @@
 import db from 'better-sqlite3-helper';
 import { pickBy } from 'lodash';
-import { ipcNewOrder, ipcUpdateOrder } from '../../../types/order';
 import type { Order, OrderAttributes } from '../../../types/order';
+import { ipcNewOrder, ipcUpdateOrder } from '../../../types/order';
 import { makeService } from '../utils';
+import { findAttributesDiff } from './utils';
 
 function newOrder(): number {
   return db().run('insert into orders default values')
     .lastInsertRowid as number;
+}
+
+function listOrders(): Record<string, Order> {
+  const ordersRows = db().query(
+    'select id, attribute_id, value from orders join orders_av oa on orders.id = oa.order_id'
+  );
+  return ordersRows.reduce((acc, row) => {
+    const { id, value, attribute_id: attributeId } = row;
+    if (!acc[id]) {
+      acc[id] = {
+        id,
+        attributes: {},
+      };
+    }
+    acc[id].attributes[attributeId] = JSON.parse(value);
+    return acc;
+  }, {} as Record<string, Order>);
+}
+
+function loadOrder(id: number): Order {
+  const orderRows = db().query(
+    'select id, attribute_id, value from orders join orders_av oa on orders.id = oa.order_id where id = ?',
+    id
+  );
+  return orderRows.reduce(
+    (acc: Order, row) => {
+      const { value, attribute_id: attributeId } = row;
+      acc.attributes![attributeId] = JSON.parse(value);
+      return acc;
+    },
+    { id: id, attributes: {} } as Order
+  );
 }
 
 function insertAttributes(
@@ -14,20 +47,13 @@ function insertAttributes(
   orderId: number,
   attributes: OrderAttributes
 ) {
+  const now = Date.now();
   const prepared = db().prepare(
-    'insert into orders_av(order_id, attribute_id, value, is_array, array_index, last_updated_by, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
+    'insert into orders_av(order_id, attribute_id, value, last_updated_by, last_updated_at) values (?, ?, ?, ?, ?)'
   );
 
-  runWithAttributes(attributes, (attributeId, value, isArray, index) =>
-    prepared.run(
-      orderId,
-      attributeId,
-      value,
-      isArray,
-      index,
-      updatedBy,
-      Date.now()
-    )
+  runWithAttributes(attributes, (attributeId, value) =>
+    prepared.run(orderId, attributeId, value, updatedBy, now)
   );
 }
 
@@ -36,58 +62,47 @@ function updateAttributes(
   orderId: number,
   attributes: OrderAttributes
 ) {
-  // first clear fields
-  db().run('delete from orders_av where order_id = ?', orderId);
-  insertAttributes(updatedBy, orderId, attributes);
+  const now = Date.now();
+  const prevData = loadOrder(orderId);
+  const diff = findAttributesDiff(prevData.attributes || {}, attributes);
+  diff.new.forEach((attId) => {
+    const value = JSON.stringify(attributes[attId]);
+    db().run(
+      `insert into orders_av(order_id, attribute_id, value, last_updated_by, last_updated_at)
+       values (?, ?, ?, ?, ?)`,
+      orderId,
+      attId,
+      value,
+      updatedBy,
+      now
+    );
+  });
+
+  diff.modified.forEach((attId) => {
+    const value = JSON.stringify(attributes[attId]);
+    db().run(
+      'update orders_av set value=?,last_updated_by=?,last_updated_at=? where order_id=? and attribute_id=?',
+      value,
+      updatedBy,
+      now,
+      orderId,
+      attId
+    );
+  });
 }
 
 function runWithAttributes(
   attributes: OrderAttributes,
-  preparedStmtRunner: (
-    attributeId: string,
-    value: string,
-    isArray: number,
-    index: number | null
-  ) => void
+  preparedStmtRunner: (attributeId: string, value: string) => void
 ) {
   Object.entries(attributes).forEach(([id, value]) => {
-    if (Array.isArray(value)) {
-      value.forEach((val, idx) => {
-        preparedStmtRunner(id, val, 1, idx);
-      });
-      return;
-    }
-    preparedStmtRunner(id, value, 0, null);
+    preparedStmtRunner(id, JSON.stringify(value));
   });
 }
 
 export const ordersService = makeService({
   listOrders: () => {
-    const ordersRows = db().query(
-      'select id, attribute_id, value, is_array, array_index from orders join orders_av oa on orders.id = oa.order_id'
-    );
-    return ordersRows.reduce((acc, row) => {
-      const {
-        id,
-        value,
-        attribute_id: attributeId,
-        is_array: isArray,
-        array_index: arrayIndex,
-      } = row;
-      if (!acc[id]) {
-        acc[id] = {
-          id,
-          attributes: {},
-        };
-      }
-      if (Array.isArray(acc[id].attributes[attributeId])) {
-        const arr = acc[id].attributes[attributeId] as string[];
-        arr.splice(arrayIndex, 0, value);
-        return acc;
-      }
-      acc[id].attributes[attributeId] = isArray ? [value] : value;
-      return acc;
-    }, {} as Record<string, Order>);
+    return listOrders();
   },
   [ipcNewOrder]: (userId: number, attributes: OrderAttributes) => {
     const validAttributes = pickBy(attributes, (value) => value !== undefined);
