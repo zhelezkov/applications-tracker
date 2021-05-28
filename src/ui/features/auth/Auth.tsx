@@ -1,10 +1,7 @@
 import { Button, Select } from 'antd';
 import { useStore } from 'effector-react';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import useIpc from '../../ipc';
-
-import type { User } from '../../../types/user';
 import { $currentUser, $users, userSelected } from './model';
 
 const Wrapper = styled.div`

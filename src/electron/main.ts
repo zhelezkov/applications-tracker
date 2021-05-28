@@ -1,11 +1,11 @@
-import path from 'path';
 import { app, BrowserWindow, ipcMain } from 'electron';
 import isDev from 'electron-is-dev';
-import { initDb } from './db/init';
+import path from 'path';
 import { loadRuntimeConfig } from './config/config';
-import { usersService } from './db/users/service';
-import { ordersService } from './db/orders/service';
 import { configService } from './config/service';
+import { initDb } from './db/init';
+import { ordersService } from './db/orders/service';
+import { usersService } from './db/users/service';
 
 async function createWindow() {
   // Create the browser window.

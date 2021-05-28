@@ -3,9 +3,9 @@ import './ui/index.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter } from 'react-router-dom';
+import App from './ui/App';
 
 import reportWebVitals from './ui/reportWebVitals';
-import App from './ui/App';
 
 ReactDOM.render(
   <React.StrictMode>

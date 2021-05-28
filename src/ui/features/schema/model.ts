@@ -1,8 +1,8 @@
 import { combine, createEffect, createStore, forward } from 'effector';
 import { createGate } from 'effector-react';
 import { keyBy } from 'lodash';
-import ipc from '../../ipc';
 import type { AttributeDefinition, SchemaConfig } from '../../../types/schema';
+import ipc from '../../ipc';
 
 export const $attributes = createStore<AttributeDefinition[]>([]);
 
