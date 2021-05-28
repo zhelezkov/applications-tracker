@@ -33,7 +33,6 @@ interface OrdersTableProps {
 
 const OrdersTable = ({ height, onRowClick }: OrdersTableProps) => {
   const orders = useStore($orders);
-  console.log(orders);
 
   const paginationConfig: TablePaginationConfig = useMemo(
     () => ({

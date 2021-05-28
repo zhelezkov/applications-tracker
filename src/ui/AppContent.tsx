@@ -2,6 +2,7 @@ import { Layout } from 'antd';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
+import LogsPage from './pages/logs/LogsPage';
 import OrdersPage from './pages/orders/OrdersPage';
 
 const { Content } = Layout;
@@ -21,7 +22,7 @@ const AppContent = () => {
           <OrdersPage />
         </Route>
         <Route exact path="/history">
-          <div>/history</div>
+          <LogsPage />
         </Route>
         <Route exact path="/settings">
           <div>Настройки</div>
