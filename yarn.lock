@@ -1804,10 +1804,10 @@
     lz-string "^1.4.4"
     pretty-format "^26.6.2"
 
-"@testing-library/jest-dom@^5.12.0":
-  version "5.12.0"
-  resolved "https://registry.yarnpkg.com/@testing-library/jest-dom/-/jest-dom-5.12.0.tgz#6a5d340b092c44b7bce17a4791b47d9bc2c61443"
-  integrity sha512-N9Y82b2Z3j6wzIoAqajlKVF1Zt7sOH0pPee0sUHXHc5cv2Fdn23r+vpWm0MBBoGJtPOly5+Bdx1lnc3CD+A+ow==
+"@testing-library/jest-dom@^5.14.1":
+  version "5.14.1"
+  resolved "https://registry.yarnpkg.com/@testing-library/jest-dom/-/jest-dom-5.14.1.tgz#8501e16f1e55a55d675fe73eecee32cdaddb9766"
+  integrity sha512-dfB7HVIgTNCxH22M1+KU6viG5of2ldoA5ly8Ar8xkezKHKXjRvznCdbMbqjYGgO2xjRbwnR+rR8MLUIqF3kKbQ==
   dependencies:
     "@babel/runtime" "^7.9.2"
     "@types/testing-library__jest-dom" "^5.9.1"
@@ -1815,6 +1815,7 @@
     chalk "^3.0.0"
     css "^3.0.0"
     css.escape "^1.5.1"
+    dom-accessibility-api "^0.5.6"
     lodash "^4.17.15"
     redent "^3.0.0"
 
@@ -2066,10 +2067,10 @@
   resolved "https://registry.yarnpkg.com/@types/q/-/q-1.5.4.tgz#15925414e0ad2cd765bfef58842f7e26a7accb24"
   integrity sha512-1HcDas8SEj4z1Wc696tH56G8OlRaH/sqZOynNNB+HF0WOeXPaxTtbYzJY2oEfiUxjSKjhCKr+MvR7dCHcEelug==
 
-"@types/react-dom@^17.0.5":
-  version "17.0.5"
-  resolved "https://item.arrival.co:443/artifactory/api/npm/cloud-npm-virtual/@types/react-dom/-/react-dom-17.0.5.tgz#df44eed5b8d9e0b13bb0cd38e0ea6572a1231227"
-  integrity sha1-30Tu1bjZ4LE7sM044OplcqEjEic=
+"@types/react-dom@^17.0.7":
+  version "17.0.7"
+  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-17.0.7.tgz#b8ee15ead9e5d6c2c858b44949fdf2ebe5212232"
+  integrity sha512-Wd5xvZRlccOrCTej8jZkoFZuZRKHzanDDv1xglI33oBNFMWrqOSzrvWFw7ngSiZjrpJAzPKFtX7JvuXpkNmQHA==
   dependencies:
     "@types/react" "*"
 
@@ -2099,10 +2100,10 @@
     "@types/scheduler" "*"
     csstype "^3.0.2"
 
-"@types/react@^17.0.8":
-  version "17.0.8"
-  resolved "https://item.arrival.co:443/artifactory/api/npm/cloud-npm-virtual/@types/react/-/react-17.0.8.tgz#fe76e3ba0fbb5602704110fd1e3035cf394778e3"
-  integrity sha1-/nbjug+7VgJwQRD9HjA1zzlHeOM=
+"@types/react@^17.0.11":
+  version "17.0.11"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.11.tgz#67fcd0ddbf5a0b083a0f94e926c7d63f3b836451"
+  integrity sha512-yFRQbD+whVonItSk7ZzP/L+gPTJVBkL/7shLEF+i9GC/1cV3JmUxEQz6+9ylhUpWSDuqo1N9qEvqS6vTj4USUA==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -2137,10 +2138,10 @@
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-2.0.0.tgz#7036640b4e21cc2f259ae826ce843d277dad8cff"
   integrity sha512-RJJrrySY7A8havqpGObOB4W92QXKJo63/jFLLgpvOtsGUqbQZ9Sbgl35KMm1DjC6j7AvmmU2bIno+3IyEaemaw==
 
-"@types/styled-components@^5.1.9":
-  version "5.1.9"
-  resolved "https://item.arrival.co:443/artifactory/api/npm/cloud-npm-virtual/@types/styled-components/-/styled-components-5.1.9.tgz#00d3d84b501420521c4db727e3c195459f87a6cf"
-  integrity sha1-ANPYS1AUIFIcTbcn48GVRZ+Hps8=
+"@types/styled-components@^5.1.10":
+  version "5.1.10"
+  resolved "https://registry.yarnpkg.com/@types/styled-components/-/styled-components-5.1.10.tgz#b509da9d62be8a02cefd88ec6b820f417429a503"
+  integrity sha512-g3ZfWlTiyXktASIhcfCicZtqB/fFFnq0a7kPYYxKXNggdrohp8m/9bMmmt3zDvHj2gplWDGCkZByfFnEXfbSWg==
   dependencies:
     "@types/hoist-non-react-statics" "*"
     "@types/react" "*"
@@ -2623,10 +2624,10 @@ ansi-styles@^4.0.0, ansi-styles@^4.1.0:
   dependencies:
     color-convert "^2.0.1"
 
-antd@^4.16.0:
-  version "4.16.0"
-  resolved "https://item.arrival.co:443/artifactory/api/npm/cloud-npm-virtual/antd/-/antd-4.16.0.tgz#35b03f42a0710edd2153f3fd33f8f93298b12bc7"
-  integrity sha1-NbA/QqBxDt0hU/P9M/j5MpixK8c=
+antd@^4.16.2:
+  version "4.16.2"
+  resolved "https://registry.yarnpkg.com/antd/-/antd-4.16.2.tgz#23b6ee8822c9ec21d9fe11b89246d49414878c48"
+  integrity sha512-8aRrhzVz0Z32PptW9syq0eQqjc9wfJn3nxgVqqxGNH5BkFr1LRiqM0wJ6FNiYc6XVbpnqP20z5gufYFHC7BHqw==
   dependencies:
     "@ant-design/colors" "^6.0.0"
     "@ant-design/icons" "^4.6.2"
@@ -2647,9 +2648,9 @@ antd@^4.16.0:
     rc-image "~5.2.4"
     rc-input-number "~7.1.0"
     rc-mentions "~1.6.1"
-    rc-menu "~9.0.0"
+    rc-menu "~9.0.9"
     rc-motion "^2.4.0"
-    rc-notification "~4.5.2"
+    rc-notification "~4.5.7"
     rc-pagination "~3.1.6"
     rc-picker "~2.5.10"
     rc-progress "~3.1.0"
@@ -3170,10 +3171,10 @@ better-sqlite3@^7.1.2:
     prebuild-install "^6.0.1"
     tar "^6.1.0"
 
-better-sqlite3@^7.4.0:
-  version "7.4.0"
-  resolved "https://item.arrival.co:443/artifactory/api/npm/cloud-npm-virtual/better-sqlite3/-/better-sqlite3-7.4.0.tgz#178cec863aa3090cbb0c5392f920925811d6ac87"
-  integrity sha1-F4zshjqjCQy7DFOS+SCSWBHWrIc=
+better-sqlite3@^7.4.1:
+  version "7.4.1"
+  resolved "https://registry.yarnpkg.com/better-sqlite3/-/better-sqlite3-7.4.1.tgz#9daab6fb5be44460772992478ccda2db53605b7d"
+  integrity sha512-sk1kW3PsWE7W7G9qbi5TQxCROlQVR8YWlp4srbyrwN5DrLeamKfrm3JExwOiNSAYyJv8cw5/2HOfvF/ipZj4qg==
   dependencies:
     bindings "^1.5.0"
     prebuild-install "^6.0.1"
@@ -4775,6 +4776,11 @@ dom-accessibility-api@^0.5.4:
   resolved "https://item.arrival.co:443/artifactory/api/npm/cloud-npm-virtual/dom-accessibility-api/-/dom-accessibility-api-0.5.4.tgz#b06d059cdd4a4ad9a79275f9d414a5c126241166"
   integrity sha1-sG0FnN1KStmnknX51BSlwSYkEWY=
 
+dom-accessibility-api@^0.5.6:
+  version "0.5.6"
+  resolved "https://registry.yarnpkg.com/dom-accessibility-api/-/dom-accessibility-api-0.5.6.tgz#3f5d43b52c7a3bd68b5fb63fa47b4e4c1fdf65a9"
+  integrity sha512-DplGLZd8L1lN64jlT27N9TVSESFR5STaEJvX+thCby7fuCHonfPpAlodYc3vuUYbDuDec5w8AMP7oCM5TWFsqw==
+
 dom-align@^1.7.0:
   version "1.12.1"
   resolved "https://registry.yarnpkg.com/dom-align/-/dom-align-1.12.1.tgz#aedbc2c312983b46ea6b7a4d636617336a490ee9"
@@ -4964,9 +4970,9 @@ electron-to-chromium@^1.3.564, electron-to-chromium@^1.3.649:
   integrity sha512-RTD97QkdrJKaKwRv9h/wGAaoR2lGxNXEcBXS31vjitgTPwTWAbLdS7cEsBK68eEQy7p6YyT8D5BxBEYHu2SuwQ==
 
 electron@^12.0.9:
-  version "12.0.9"
-  resolved "https://item.arrival.co:443/artifactory/api/npm/cloud-npm-virtual/electron/-/electron-12.0.9.tgz#d582afa8f6fc0c429606f0961a4c89b376994823"
-  integrity sha1-1YKvqPb8DEKWBvCWGkyJs3aZSCM=
+  version "12.0.11"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-12.0.11.tgz#555dc1cf663e320f2f2cbdf89319352b08fc59f2"
+  integrity sha512-6gPjcce3QCeAWZ8UVAqVy6os+86D5BcxgkIzlROxX89u+du/i7WpZXF5F1vgv419rspds9OHejP3JrJnoUGh6w==
   dependencies:
     "@electron/get" "^1.0.1"
     "@types/node" "^14.6.2"
@@ -10103,10 +10109,10 @@ prettier-linter-helpers@^1.0.0:
   dependencies:
     fast-diff "^1.1.2"
 
-prettier@2.3.0:
-  version "2.3.0"
-  resolved "https://item.arrival.co:443/artifactory/api/npm/cloud-npm-virtual/prettier/-/prettier-2.3.0.tgz#b6a5bf1284026ae640f17f7ff5658a7567fc0d18"
-  integrity sha1-tqW/EoQCauZA8X9/9WWKdWf8DRg=
+prettier@2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.3.1.tgz#76903c3f8c4449bc9ac597acefa24dc5ad4cbea6"
+  integrity sha512-p+vNbgpLjif/+D+DwAZAbndtRrR0md0MwfmOVN9N+2RgyACMT+7tfaRnT+WDPkqnuVwleyuBIG2XBxKDme3hPA==
 
 pretty-bytes@^5.3.0:
   version "5.6.0"
@@ -10449,10 +10455,23 @@ rc-mentions@~1.6.1:
     rc-trigger "^5.0.4"
     rc-util "^5.0.1"
 
-rc-menu@^9.0.0, rc-menu@~9.0.0:
+rc-menu@^9.0.0:
   version "9.0.10"
   resolved "https://item.arrival.co:443/artifactory/api/npm/cloud-npm-virtual/rc-menu/-/rc-menu-9.0.10.tgz#59fde6442c138dc60693fbe02ea50c33c8164f38"
   integrity sha1-Wf3mRCwTjcYGk/vgLqUMM8gWTzg=
+  dependencies:
+    "@babel/runtime" "^7.10.1"
+    classnames "2.x"
+    rc-motion "^2.4.3"
+    rc-overflow "^1.2.0"
+    rc-trigger "^5.1.2"
+    rc-util "^5.12.0"
+    shallowequal "^1.1.0"
+
+rc-menu@~9.0.9:
+  version "9.0.11"
+  resolved "https://registry.yarnpkg.com/rc-menu/-/rc-menu-9.0.11.tgz#5c6c994a3df70f1e69ec7996ceb5067b2c335d45"
+  integrity sha512-lwE6Zrs3ZpK9XKuk8+AOsQI3QXQFybzANvTNU2DIZQuqi53aEJIzNtibfq9j68DosKhKcxV++GcK9K6pL9Ku8A==
   dependencies:
     "@babel/runtime" "^7.10.1"
     classnames "2.x"
@@ -10471,10 +10490,10 @@ rc-motion@^2.0.0, rc-motion@^2.0.1, rc-motion@^2.2.0, rc-motion@^2.3.0, rc-motio
     classnames "^2.2.1"
     rc-util "^5.2.1"
 
-rc-notification@~4.5.2:
-  version "4.5.5"
-  resolved "https://registry.yarnpkg.com/rc-notification/-/rc-notification-4.5.5.tgz#9660a495d5f20bd677686e4f7fc00e4f0c1a3849"
-  integrity sha512-YIfhTSw+h5GsSdgMnuMx24wqiPlg3FeamuOlkh9RkyHx+SeZVAKzQ0juy2NGvPEF2hDWi5xTqxUqLdo0L2AmGg==
+rc-notification@~4.5.7:
+  version "4.5.7"
+  resolved "https://registry.yarnpkg.com/rc-notification/-/rc-notification-4.5.7.tgz#265e6e6a0c1a0fac63d6abd4d832eb8ff31522f1"
+  integrity sha512-zhTGUjBIItbx96SiRu3KVURcLOydLUHZCPpYEn1zvh+re//Tnq/wSxN4FKgp38n4HOgHSVxcLEeSxBMTeBBDdw==
   dependencies:
     "@babel/runtime" "^7.10.1"
     classnames "2.x"
@@ -13160,10 +13179,10 @@ wcwidth@^1.0.1:
   dependencies:
     defaults "^1.0.3"
 
-web-vitals@^1.1.2:
-  version "1.1.2"
-  resolved "https://item.arrival.co:443/artifactory/api/npm/cloud-npm-virtual/web-vitals/-/web-vitals-1.1.2.tgz#06535308168986096239aa84716e68b4c6ae6d1c"
-  integrity sha1-BlNTCBaJhgliOaqEcW5otMaubRw=
+web-vitals@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/web-vitals/-/web-vitals-2.0.1.tgz#d122720bd9c8dd69792b19c0f6ab0346861a880f"
+  integrity sha512-niqKyp2T6xF9EzSi+xx+V6qitE0YfagzfUmDAa9qeCrIVeyfzQQ85Uy0ykeRlEVDCCqkhYccoUunNf9ZIQcvtA==
 
 webidl-conversions@^5.0.0:
   version "5.0.0"

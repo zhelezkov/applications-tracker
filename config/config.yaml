@@ -30,14 +30,17 @@ schema:
         - cust2
         - cust3
     type:
+      name: вид
       type: multiSelect
       values:
-        - type1
-        - type2
-        - type3
+        - водопровод
+        - обои
+        - штукатурка
     internalCode:
+      name: шифр
       type: input
     managerZone:
+      name: зона менеджера
       type: multiSelect
       values:
         - zone1
