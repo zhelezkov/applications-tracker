@@ -3,10 +3,10 @@ import type { ColumnsType } from 'antd/es/table';
 import { useStore } from 'effector-react';
 import { useCallback, useMemo } from 'react';
 import type { Log } from '../../../types/logs';
-
-import styles from './LogsTable.module.css';
 import { $logs } from './model';
 import { $attributesById } from '../schema/model';
+
+import styles from './LogsTable.module.css';
 
 const renderValue = (value: any) => {
   if (Array.isArray(value)) {
