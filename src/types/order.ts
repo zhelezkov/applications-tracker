@@ -7,3 +7,4 @@ export interface Order {
 
 export const ipcNewOrder = 'newOrder';
 export const ipcUpdateOrder = 'updateOrder';
+export const ipcListOrders = 'listOrders';

@@ -2,7 +2,11 @@ import { createEffect, createStore, forward } from 'effector';
 import { createGate } from 'effector-react';
 import { attach } from 'effector/effector.cjs';
 import type { Order, OrderAttributes } from '../../../types/order';
-import { ipcNewOrder, ipcUpdateOrder } from '../../../types/order';
+import {
+  ipcListOrders,
+  ipcNewOrder,
+  ipcUpdateOrder,
+} from '../../../types/order';
 import ipc from '../../ipc';
 import { $currentUserId } from '../auth/model';
 
@@ -17,7 +21,7 @@ export const $orders = $ordersById.map((orders) => Object.values(orders));
 // effects
 
 export const fetchOrdersFx = createEffect<void, Record<string, Order>>(
-  async () => ipc().invoke('listOrders')
+  async () => ipc().invoke(ipcListOrders)
 );
 
 export const newOrderFx = attach({

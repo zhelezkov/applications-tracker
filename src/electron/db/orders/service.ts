@@ -1,7 +1,11 @@
 import db from 'better-sqlite3-helper';
 import { pickBy } from 'lodash';
 import type { Order, OrderAttributes } from '../../../types/order';
-import { ipcNewOrder, ipcUpdateOrder } from '../../../types/order';
+import {
+  ipcListOrders,
+  ipcNewOrder,
+  ipcUpdateOrder,
+} from '../../../types/order';
 import { makeService } from '../utils';
 import { findAttributesDiff } from './utils';
 
@@ -101,7 +105,7 @@ function runWithAttributes(
 }
 
 export const ordersService = makeService({
-  listOrders: () => {
+  [ipcListOrders]: () => {
     return listOrders();
   },
   [ipcNewOrder]: (userId: number, attributes: OrderAttributes) => {

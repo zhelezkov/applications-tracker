@@ -6,6 +6,7 @@ import { configService } from './config/service';
 import { initDb } from './db/init';
 import { ordersService } from './db/orders/service';
 import { usersService } from './db/users/service';
+import { logsService } from './db/logs/service';
 
 async function createWindow() {
   // Create the browser window.
@@ -46,7 +47,12 @@ async function createWindow() {
 }
 
 function registerServicesInIpc() {
-  const ipcFunctions = [...configService, ...usersService, ...ordersService];
+  const ipcFunctions = [
+    ...configService,
+    ...usersService,
+    ...ordersService,
+    ...logsService,
+  ];
   ipcFunctions.forEach((ipcFn) => {
     ipcMain.handle(ipcFn.name, ipcFn.fn);
   });
