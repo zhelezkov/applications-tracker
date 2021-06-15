@@ -1,8 +1,9 @@
-import { Button, Select } from 'antd';
+import { Button, Input, message, Select } from 'antd';
 import { useStore } from 'effector-react';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
-import { $currentUser, $users, userSelected } from './model';
+import { $users, $usersById, userSelected } from './model';
+import { compare } from 'bcryptjs';
 
 const Wrapper = styled.div`
   display: flex;
@@ -18,22 +19,45 @@ const UserSelect = styled(Select)`
   margin-bottom: 32px;
 ` as typeof Select;
 
+const PasswordInput = styled(Input.Password)`
+  max-width: 300px;
+  margin-bottom: 32px;
+`;
+
 const Auth = () => {
   const users = useStore($users);
-  const currentUser = useStore($currentUser);
+  const usersById = useStore($usersById);
 
-  console.log(users);
+  const [selectedUser, selectUser] = useState<number>();
+  const [password, setPassword] = useState<string>();
 
   const handleUserSelect = useCallback((id?: number) => {
-    console.log(id);
-    if (!id) return;
-    userSelected(id);
+    selectUser(id);
   }, []);
+
+  const handleEnter = useCallback(async () => {
+    if (!selectedUser || !password) return;
+    const user = usersById[selectedUser];
+    if (!user) return;
+    const passwordsEqual = await compare(password, user.password);
+    if (!passwordsEqual) {
+      message.error('неверный пароль');
+      return;
+    }
+    userSelected(selectedUser);
+  }, [password, selectedUser, usersById]);
+
+  const handlePasswordChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setPassword(e.target.value);
+    },
+    []
+  );
 
   return (
     <Wrapper>
       <UserSelect
-        value={currentUser?.id}
+        value={selectedUser}
         placeholder="Выберите пользователя"
         onChange={handleUserSelect}
       >
@@ -43,7 +67,20 @@ const Auth = () => {
           </Select.Option>
         ))}
       </UserSelect>
-      <Button color="primary">Войти</Button>
+      {Boolean(selectedUser) && (
+        <PasswordInput
+          placeholder="Введите пароль"
+          value={password}
+          onChange={handlePasswordChange}
+        />
+      )}
+      <Button
+        color="primary"
+        disabled={!selectedUser || !password}
+        onClick={handleEnter}
+      >
+        Войти
+      </Button>
     </Wrapper>
   );
 };

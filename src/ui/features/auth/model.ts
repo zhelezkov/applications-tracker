@@ -6,6 +6,7 @@ import {
   forward,
 } from 'effector';
 import { createGate } from 'effector-react';
+import { keyBy } from 'lodash';
 import type { User } from '../../../types/user';
 import { ipcListUsers } from '../../../types/user';
 import ipc from '../../ipc';
@@ -27,15 +28,19 @@ export const $users = createStore<User[]>([]).on(
   (_, users) => users
 );
 
+export const $usersById = $users.map((users) =>
+  keyBy(users, (user) => user.id)
+);
+
 export const $currentUserId = createStore<number | null>(null).on(
   userSelected,
   (_, userId) => userId
 );
 
 export const $currentUser = combine(
-  $users,
+  $usersById,
   $currentUserId,
-  (users, currentUserId) => users.find(({ id }) => id === currentUserId)
+  (users, currentUserId) => (currentUserId ? users[currentUserId] : null)
 );
 
 export const $isAuthenticated = $currentUserId.map((id) => id !== null);

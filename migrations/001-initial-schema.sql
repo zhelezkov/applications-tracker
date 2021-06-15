@@ -3,9 +3,10 @@ pragma foreign_keys = on;
 
 create table users
 (
-    id   integer not null primary key autoincrement,
-    name text    not null,
-    role text    not null check (role in ('supervisor', 'manager', 'director'))
+    id       integer not null primary key autoincrement,
+    name     text    not null,
+    password text    not null,
+    role     text    not null check (role in ('supervisor', 'manager', 'director'))
 );
 
 create table orders
