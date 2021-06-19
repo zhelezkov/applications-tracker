@@ -1,9 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
-import SearchRow from './SearchRow';
-import { nanoid } from 'nanoid';
+import SearchRow, { SearchMeta } from './SearchRow';
 import { useStore } from 'effector-react';
 import { $attributes } from '../schema/model';
+import { newSearchMeta } from './utils';
+import { useDebounce } from 'react-use';
 
 const Wrapper = styled.div`
   display: flex;
@@ -14,42 +15,58 @@ const RowWrapper = styled.div`
   margin-bottom: 16px;
 `;
 
-interface SearchField {
-  id: string;
+interface SearchProps {
+  onPerformSearch?: (searchParams: SearchMeta[]) => void;
 }
 
-function newSearchField(): SearchField {
-  return { id: nanoid() };
-}
-
-interface SearchProps {}
-
-const Search = ({}: SearchProps) => {
+const Search = ({ onPerformSearch }: SearchProps) => {
   const fields = useStore($attributes);
 
-  const [searchFields, setSearchFields] = useState<SearchField[]>([
-    newSearchField(),
+  const [searchFields, setSearchFields] = useState<SearchMeta[]>([
+    newSearchMeta(),
   ]);
 
   const handleNewSearchClick = useCallback(() => {
-    setSearchFields((prev) => [...prev, newSearchField()]);
+    setSearchFields((prev) => [...prev, newSearchMeta()]);
   }, []);
 
   const handleSearchRemove = useCallback((id: string) => {
     setSearchFields((prev) => prev.filter((it) => it.id !== id));
   }, []);
 
+  const handleSearchChange = useCallback(
+    (meta: SearchMeta) =>
+      setSearchFields((prev) =>
+        prev.map((it) => {
+          if (it.id === meta.id) {
+            return meta;
+          }
+          return it;
+        })
+      ),
+    []
+  );
+
+  useDebounce(
+    () => {
+      onPerformSearch?.(searchFields);
+    },
+    1000,
+    [searchFields]
+  );
+
   return (
     <Wrapper>
-      {searchFields.map(({ id }, index) => (
-        <RowWrapper key={id}>
+      {searchFields.map((meta, index) => (
+        <RowWrapper key={meta.id}>
           <SearchRow
-            id={id}
+            meta={meta}
             fields={fields}
             hasAddButton={index === searchFields.length - 1}
             hasRemoveButton={index !== searchFields.length - 1}
             onAddSearchRowButtonClick={handleNewSearchClick}
             onRemoveButtonClick={handleSearchRemove}
+            onSearchChange={handleSearchChange}
           />
         </RowWrapper>
       ))}

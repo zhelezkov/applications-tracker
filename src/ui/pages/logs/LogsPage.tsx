@@ -1,10 +1,11 @@
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { useGate } from 'effector-react';
 import { logsGate } from '../../features/logs/model';
 import { useMeasure } from 'react-use';
-import React from 'react';
 import LogsTable from '../../features/logs/LogsTable';
 import Search from '../../features/search/Search';
+import type { SearchMeta } from '../../features/search/SearchRow';
 
 const Wrapper = styled.div`
   flex: 1;
@@ -19,10 +20,16 @@ const LogsPage = () => {
   useGate(logsGate);
   const [measureRef, { height: wrapperHeight }] = useMeasure<HTMLDivElement>();
 
+  const handleSearch = useCallback((params: SearchMeta[]) => {
+    const search = params.filter((it) => it.searchValue && it.fieldId);
+
+    console.log('handle search', search);
+  }, []);
+
   return (
     <Wrapper ref={measureRef}>
       <SearchBlockWrapper>
-        <Search />
+        <Search onPerformSearch={handleSearch} />
       </SearchBlockWrapper>
       <div>
         <LogsTable height={wrapperHeight} />

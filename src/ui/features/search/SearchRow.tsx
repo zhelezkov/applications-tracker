@@ -4,8 +4,6 @@ import { Button, Input, Select } from 'antd';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import type { AttributeDefinition } from '../../../types/schema';
 
-const { Search: BaseSearchInput } = Input;
-
 const { Option } = Select;
 
 const Wrapper = styled.div`
@@ -14,47 +12,72 @@ const Wrapper = styled.div`
   flex-direction: row;
 `;
 
-const SearchInput = styled(BaseSearchInput)`
+const SearchInput = styled(Input)`
   flex: 3;
   margin-right: 16px;
 `;
 
-const FieldsInput = styled(Select)`
+const FieldsSelect = styled(Select)`
   flex: 1;
   margin-right: 16px;
-`;
+` as typeof Select;
+
+export interface SearchMeta {
+  id: string;
+  fieldId?: string;
+  searchValue?: string;
+}
 
 interface SearchRowProps {
-  id: string;
+  meta: SearchMeta;
   fields: AttributeDefinition[];
   hasAddButton?: boolean;
   hasRemoveButton?: boolean;
   onAddSearchRowButtonClick?: () => void;
   onRemoveButtonClick?: (id: string) => void;
+  onSearchChange?: (meta: SearchMeta) => void;
 }
 
 const SearchRow = ({
-  id,
+  meta,
   fields = [],
   hasAddButton,
   hasRemoveButton,
   onAddSearchRowButtonClick,
   onRemoveButtonClick,
+  onSearchChange,
 }: SearchRowProps) => {
   const handleRemoveButtonClick = useCallback(() => {
-    onRemoveButtonClick?.(id);
-  }, [id, onRemoveButtonClick]);
+    onRemoveButtonClick?.(meta.id);
+  }, [meta, onRemoveButtonClick]);
+
+  const handleSearchInputChange = useCallback(
+    (ev: React.ChangeEvent<HTMLInputElement>) => {
+      onSearchChange?.({ ...meta, searchValue: ev.target.value });
+    },
+    [meta, onSearchChange]
+  );
+
+  const handleSearchFieldChange = useCallback(
+    (fieldId: string) => {
+      onSearchChange?.({ ...meta, fieldId });
+    },
+    [meta, onSearchChange]
+  );
 
   return (
     <Wrapper>
-      <FieldsInput>
+      <FieldsSelect value={meta.fieldId} onChange={handleSearchFieldChange}>
         {fields.map(({ id, name }) => (
           <Option key={id} value={id}>
             {name ?? id}
           </Option>
         ))}
-      </FieldsInput>
-      <SearchInput />
+      </FieldsSelect>
+      <SearchInput
+        value={meta.searchValue}
+        onChange={handleSearchInputChange}
+      />
       {hasAddButton && (
         <Button
           type="primary"
