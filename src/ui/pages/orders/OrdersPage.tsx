@@ -1,4 +1,4 @@
-import { Form, Modal } from 'antd';
+import { Button, Form, Modal, Popconfirm } from 'antd';
 import { useGate } from 'effector-react';
 import React, { useCallback, useState } from 'react';
 import { useMeasure } from 'react-use';
@@ -84,8 +84,12 @@ const OrdersPage = () => {
       </div>
       <Modal
         visible={isOrderFormVisible}
-        onOk={handleOrderSave}
         onCancel={handleCancel}
+        footer={[
+          <Popconfirm title="внести изменения?" onConfirm={handleOrderSave}>
+            <Button type="primary">Сохранить</Button>
+          </Popconfirm>,
+        ]}
       >
         <EditOrderForm form={form} />
       </Modal>
