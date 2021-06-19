@@ -10,6 +10,7 @@ import type { SearchMeta } from '../../features/search/SearchRow';
 const Wrapper = styled.div`
   flex: 1;
   height: 100%;
+  overflow: auto;
 `;
 
 const SearchBlockWrapper = styled.div`
