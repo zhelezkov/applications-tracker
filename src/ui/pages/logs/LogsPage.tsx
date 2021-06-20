@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { useGate } from 'effector-react';
-import { logsGate } from '../../features/logs/model';
+import { fetchLogsFx, logsGate } from '../../features/logs/model';
 import { useMeasure } from 'react-use';
 import LogsTable from '../../features/logs/LogsTable';
 import Search from '../../features/search/Search';
@@ -22,9 +22,13 @@ const LogsPage = () => {
   const [measureRef, { height: wrapperHeight }] = useMeasure<HTMLDivElement>();
 
   const handleSearch = useCallback((params: SearchMeta[]) => {
-    const search = params.filter((it) => it.searchValue && it.fieldId);
-
-    console.log('handle search', search);
+    const search = params
+      .filter((it) => it.searchValue && it.fieldId)
+      .map((it) => ({
+        field: it.fieldId!,
+        value: it.searchValue!,
+      }));
+    fetchLogsFx(search);
   }, []);
 
   return (
