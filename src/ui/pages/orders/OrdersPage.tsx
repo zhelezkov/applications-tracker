@@ -19,6 +19,7 @@ const Wrapper = styled.div`
 `;
 
 const ControlsWrapper = styled.div`
+  padding-left: 16px;
   margin-bottom: 16px;
 `;
 

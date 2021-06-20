@@ -14,7 +14,7 @@ const Wrapper = styled.div`
 `;
 
 const SearchBlockWrapper = styled.div`
-  padding: 0 16px 16px 16px;
+  padding: 0 16px 0 16px;
 `;
 
 const LogsPage = () => {
