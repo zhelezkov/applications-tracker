@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { Button, Input, Select } from 'antd';
+import { AutoComplete, Button, Select } from 'antd';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import type { AttributeDefinition } from '../../../types/schema';
 
@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   flex-direction: row;
 `;
 
-const SearchInput = styled(Input)`
+const SearchInput = styled(AutoComplete)`
   flex: 3;
   margin-right: 16px;
 `;
@@ -54,8 +54,8 @@ const SearchRow = ({
   }, [meta, onRemoveButtonClick]);
 
   const handleSearchInputChange = useCallback(
-    (ev: React.ChangeEvent<HTMLInputElement>) => {
-      onSearchChange?.({ ...meta, searchValue: ev.target.value });
+    (value: string) => {
+      onSearchChange?.({ ...meta, searchValue: value });
     },
     [meta, onSearchChange]
   );
@@ -89,6 +89,11 @@ const SearchRow = ({
       <SearchInput
         placeholder="Поиск"
         value={meta.searchValue}
+        options={
+          fields
+            .find((it) => it.id === meta.fieldId)
+            ?.values?.map((it) => ({ value: it })) ?? []
+        }
         onChange={handleSearchInputChange}
       />
       {hasAddButton && (
