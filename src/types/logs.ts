@@ -9,3 +9,4 @@ export interface Log {
 }
 
 export const ipcListLogs = 'listLogs';
+export const ipcListLogsForOrder = 'listLogsForOrder';

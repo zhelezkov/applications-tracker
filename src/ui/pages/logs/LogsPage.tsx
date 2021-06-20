@@ -28,7 +28,7 @@ const LogsPage = () => {
         field: it.fieldId!,
         value: it.searchValue!,
       }));
-    fetchLogsFx(search);
+    fetchLogsFx({ searchParams: search });
   }, []);
 
   return (

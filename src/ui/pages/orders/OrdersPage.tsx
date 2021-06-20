@@ -1,6 +1,6 @@
-import { Button, Form, Modal, Popconfirm } from 'antd';
+import { Button, Form, Modal, Popconfirm, Tabs } from 'antd';
 import { useGate } from 'effector-react';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useMeasure } from 'react-use';
 import styled from 'styled-components';
 import type { Order, OrderAttributes } from '../../../types/order';
@@ -12,6 +12,8 @@ import {
   updateOrderFx,
 } from '../../features/orders/model';
 import OrdersTable from '../../features/orders/OrdersTable';
+import LogsTable from '../../features/logs/LogsTable';
+import { fetchLogsForOrderFx } from '../../features/logs/model';
 
 const Wrapper = styled.div`
   flex: 1;
@@ -75,6 +77,11 @@ const OrdersPage = () => {
     [form]
   );
 
+  useEffect(() => {
+    if (!activeOrderId) return;
+    fetchLogsForOrderFx({ orderId: activeOrderId });
+  }, [activeOrderId]);
+
   return (
     <Wrapper ref={measureRef}>
       <ControlsWrapper>
@@ -86,13 +93,21 @@ const OrdersPage = () => {
       <Modal
         visible={isOrderFormVisible}
         onCancel={handleCancel}
+        width="75%"
         footer={[
           <Popconfirm title="внести изменения?" onConfirm={handleOrderSave}>
             <Button type="primary">Сохранить</Button>
           </Popconfirm>,
         ]}
       >
-        <EditOrderForm form={form} />
+        <Tabs defaultActiveKey="order">
+          <Tabs.TabPane key="order" tab="заказ">
+            <EditOrderForm form={form} />
+          </Tabs.TabPane>
+          <Tabs.TabPane key="logs" tab="хроника">
+            <LogsTable height={window.innerHeight * 0.65} />
+          </Tabs.TabPane>
+        </Tabs>
       </Modal>
     </Wrapper>
   );

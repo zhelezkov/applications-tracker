@@ -19,16 +19,16 @@ schema:
       name: категория
       type: select
       values:
-        - cat1
-        - cat2
-        - cat3
+        - категория 1
+        - категория 2
+        - категория 3
     customer:
       name: заказчик
       type: select
       values:
-        - cust1
-        - cust2
-        - cust3
+        - заказчик 1
+        - заказчик 2
+        - заказчик 3
     type:
       name: вид
       type: multiSelect
@@ -43,6 +43,6 @@ schema:
       name: зона менеджера
       type: multiSelect
       values:
-        - zone1
-        - zone2
-        - zone3
+        - отдел 1
+        - отдел 2
+        - отдел 3

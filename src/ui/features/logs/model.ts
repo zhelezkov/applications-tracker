@@ -1,8 +1,8 @@
 import { createEffect, createStore, forward } from 'effector';
 import { createGate } from 'effector-react';
-import ipc from '../../ipc';
+import { ipcInvoke } from '../../ipc';
 import type { Log } from '../../../types/logs';
-import { ipcListLogs } from '../../../types/logs';
+import { ipcListLogs, ipcListLogsForOrder } from '../../../types/logs';
 import type { SearchParams } from '../../../types/search';
 
 // stores
@@ -12,21 +12,36 @@ export const $logs = createStore<Log[]>([]);
 
 // effects
 
-export const fetchLogsFx = createEffect<SearchParams[], Log[]>(async (params) =>
-  ipc().invoke(ipcListLogs, params)
+export const fetchLogsFx = createEffect(
+  ({ searchParams = [] }: { searchParams?: SearchParams[] }) =>
+    ipcInvoke<Log[]>(ipcListLogs, searchParams)
 );
 
-export const logsGate = createGate();
+export const fetchLogsForOrderFx = createEffect(
+  ({
+    orderId,
+    searchParams = [],
+  }: {
+    orderId: number;
+    searchParams?: SearchParams[];
+  }) => ipcInvoke<Log[]>(ipcListLogsForOrder, orderId, searchParams)
+);
+
+export const logsGate = createGate<{ searchParams?: SearchParams[] }>();
 
 // logic
 
 forward({
-  // @ts-ignore
   from: logsGate.open,
   to: fetchLogsFx,
 });
 
 forward({
   from: fetchLogsFx.doneData,
+  to: $logs,
+});
+
+forward({
+  from: fetchLogsForOrderFx.doneData,
   to: $logs,
 });
