@@ -31,6 +31,7 @@ export interface SearchMeta {
 interface SearchRowProps {
   meta: SearchMeta;
   fields: AttributeDefinition[];
+  selectedFields?: string[];
   hasAddButton?: boolean;
   hasRemoveButton?: boolean;
   onAddSearchRowButtonClick?: () => void;
@@ -41,6 +42,7 @@ interface SearchRowProps {
 const SearchRow = ({
   meta,
   fields = [],
+  selectedFields = [],
   hasAddButton,
   hasRemoveButton,
   onAddSearchRowButtonClick,
@@ -67,14 +69,25 @@ const SearchRow = ({
 
   return (
     <Wrapper>
-      <FieldsSelect value={meta.fieldId} onChange={handleSearchFieldChange}>
-        {fields.map(({ id, name }) => (
-          <Option key={id} value={id}>
-            {name ?? id}
-          </Option>
-        ))}
+      <FieldsSelect
+        placeholder="Выберите поле"
+        value={meta.fieldId}
+        onChange={handleSearchFieldChange}
+      >
+        {fields
+          .filter(
+            ({ id }) => id === meta.fieldId || !selectedFields.includes(id)
+          )
+          .map(({ id, name }) => {
+            return (
+              <Option key={id} value={id}>
+                {name}
+              </Option>
+            );
+          })}
       </FieldsSelect>
       <SearchInput
+        placeholder="Поиск"
         value={meta.searchValue}
         onChange={handleSearchInputChange}
       />

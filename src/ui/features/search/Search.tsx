@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import SearchRow, { SearchMeta } from './SearchRow';
 import { useStore } from 'effector-react';
@@ -47,6 +47,12 @@ const Search = ({ onPerformSearch }: SearchProps) => {
     []
   );
 
+  const selectedFields = useMemo(
+    () =>
+      searchFields.filter((meta) => meta.fieldId).map((meta) => meta.fieldId!),
+    [searchFields]
+  );
+
   useDebounce(
     () => {
       onPerformSearch?.(searchFields);
@@ -62,6 +68,7 @@ const Search = ({ onPerformSearch }: SearchProps) => {
           <SearchRow
             meta={meta}
             fields={fields}
+            selectedFields={selectedFields}
             hasAddButton={index === searchFields.length - 1}
             hasRemoveButton={index !== searchFields.length - 1}
             onAddSearchRowButtonClick={handleNewSearchClick}
